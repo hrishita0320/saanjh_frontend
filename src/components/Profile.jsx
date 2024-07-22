@@ -1,11 +1,8 @@
-import React from 'react'
-// import Navigationvar from './Navigationvar'
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
-// import Logo from "../Assets/Logo.svg";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from './Header';
+// import './PatientDetails.css'; // Make sure to create this CSS file
 
 export default function PatientDetails() {
     const [patientData, setPatientData] = useState()
@@ -125,61 +122,35 @@ export default function PatientDetails() {
 
 
     return (
-
-        <div>
-           <Header/>
-            <div className="details">
-                <header className="details-header">
+        <div className="patient-details">
+            <Header />
+            <div className="profile-container">
+                <div className="profile-headers">
                     <h1>Patient Details</h1>
-                </header>
-                <div>
-                    <button onClick={handleBack}>
-                        Back
-                    </button>
+                    <button onClick={handleBack} className="back-button">Back</button>
                 </div>
-                <main class="details-main">
-                    {patientData ? (
-                        <section className="d-patientData-details">
-                            <h2 className="d-h2">Patient Information</h2>
-                            <p className="d-p"><strong>Id:</strong>{patientData._id}</p>
-                            <p className="d-p"><strong>Name:</strong> {patientData.name}</p>
-                            <p className="d-p"><strong>Phone Number:</strong> {patientData.phoneNumber}</p>
-                            <p className="d-p"><strong>Date of Birth:</strong> {formatDate(patientData.DOB)}</p>
-                            <p className="d-p"><strong>Gender:</strong> {patientData.gender}</p>
-                            <p className="d-p"><strong>Blood group:</strong> {patientData.bloodGroup}</p>
-                            <p className="d-p"><strong>Chronics:</strong>{patientData.chronics.map((condition, index) => (
-                                <span key={index} >
-                                    {` ${condition},`}
-                                </span>
-                            ))}</p>
-                        </section>
-                    ) : (
-                        <p>Loading patient details...</p>
-                    )}
-                    {/* <section className="d-predicted-risks">
-                        <h2 class="d-h2">Predicted Risks</h2>
-                        <ul class="d-ul"> */}
-                    {/* {patientData.predictedRisks.map((risk, index) => (
-                            <li key={index}>{risk}</li>
-                        ))} */}
-                    {/* </ul>
+                
+                <main className="profile-main">
+                    <section className="patient-info">
+                        <h2>Patient Information</h2>
+                        {patientData && (
+                            <div className="info-grid">
+                                <div className="info-item"><strong>ID:</strong> {patientData._id}</div>
+                                <div className="info-item"><strong>Name:</strong> {patientData.name}</div>
+                                <div className="info-item"><strong>Phone:</strong> {patientData.phone}</div>
+                                <div className="info-item"><strong>DOB:</strong> {new Date(patientData.DOB).toLocaleDateString()}</div>
+                                <div className="info-item"><strong>Gender:</strong> {patientData.gender}</div>
+                                <div className="info-item"><strong>Blood Group:</strong> {patientData.bloodGroup}</div>
+                                <div className="info-item full-width">
+                                    <strong>Chronics:</strong> {patientData.chronics.join(', ')}
+                                </div>
+                            </div>
+                        )}
                     </section>
-                    <section className="d-recommended-treatment">
-                        <h2 class="d-h2">Recommended Treatment</h2>
-                        <ul class="d-ul"> */}
-                    {/* {patientData.recommendedTreatment.map((treatment, index) => (
-                            <li key={index}>{treatment}</li>
-                        ))} */}
-                    {/* </ul>
-                    </section> */}
 
-
-
-
-
-                    <div >
-                       
-                        <label htmlFor="file-upload">
+                    <section className="report-upload">
+                        <h2>Upload Reports</h2>
+                        <label htmlFor="file-upload" className="file-upload-label">
                             Upload Reports
                         </label>
                         <input
@@ -188,60 +159,25 @@ export default function PatientDetails() {
                             className="hidden"
                             onChange={handleFile}
                         />
-                         <h2 >
-                            Report History
-                        </h2>
-                    </div>
+                    </section>
 
-                    {/* <div>
-                        {patientData.reportsList && patientData.reportsList.map((file, index) => (
-                            <div key={index} className="file-item" style={{
-                                backgroundColor: '#e9ecef',
-                                color: '#495057',
-                                padding: '8px',
-                                borderRadius: '5px',
-                                margin: '8px 0',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center'
-                            }}
-                            //   onClick={() => handleFileClick(file)}
-                            >
-                                <i className="fas fa-file-alt" style={{ fontSize: '20px', color: '#e74c3c', marginRight: '10px' }} />
-                                <p>File ID: {file}</p>
-                            </div>
-                        ))}
-                    </div> */}
-                    <div>
-                        {patientData?.reportsList && patientData.reportsList.length > 0 ? (
-                            patientData.reportsList.map((file, index) => (
-                                <div key={index} className="file-item" style={{
-                                    backgroundColor: '#e9ecef',
-                                    color: '#495057',
-                                    padding: '8px',
-                                    borderRadius: '5px',
-                                    margin: '8px 0',
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}onClick={() => handleFileClick(file)}>
-                                    <i className="fas fa-file-alt" style={{ fontSize: '20px', color: '#e74c3c', marginRight: '10px' }} />
-                                    <p>File ID: {file}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No reports found.</p>
-                        )}
-                    </div>
-
-
-
-
-
-
-
+                    <section className="report-history">
+                        <h2>Report History</h2>
+                        <div className="file-list">
+                            {patientData?.reportsList && patientData.reportsList.length > 0 ? (
+                                patientData.reportsList.map((file, index) => (
+                                    <div key={index} className="file-item" onClick={() => handleFileClick(file)}>
+                                        <i className="fas fa-file-alt"></i>
+                                        <span>File ID: {file}</span>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No reports found.</p>
+                            )}
+                        </div>
+                    </section>
                 </main>
             </div>
-      </div>
-)
+        </div>
+    );
 }

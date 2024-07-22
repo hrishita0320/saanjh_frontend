@@ -39,12 +39,12 @@ export default function DoctorProfile() {
 
     return (
         <div className="doctor-profile">
-            {/* <Header /> */}
+            <Header />
             <div className="profile-container">
-                <header className="profile-header">
+                <div className="profile-headers">
                     <h1>Patient Details</h1>
                     <button onClick={handleBack} className="back-button">Back</button>
-                </header>
+                </div>
                 
                 <main className="profile-main">
                     <section className="patient-info">
@@ -53,7 +53,7 @@ export default function DoctorProfile() {
                             <div className="info-grid">
                                 <div className="info-item"><strong>ID:</strong> {patientData._id}</div>
                                 <div className="info-item"><strong>Name:</strong> {patientData.name}</div>
-                                <div className="info-item"><strong>Phone:</strong> {patientData.phoneNumber}</div>
+                                <div className="info-item"><strong>Phone:</strong> {patientData.phone}</div>
                                 <div className="info-item"><strong>DOB:</strong> {new Date(patientData.DOB).toLocaleDateString()}</div>
                                 <div className="info-item"><strong>Gender:</strong> {patientData.gender}</div>
                                 <div className="info-item"><strong>Blood Group:</strong> {patientData.bloodGroup}</div>

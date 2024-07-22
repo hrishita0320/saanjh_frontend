@@ -12,6 +12,7 @@ import Profile from './components/Profile';
 import Analysis from './components/Analysis';
 import AnalysisDoctor from './components/AnalysisDoctor';
 import DoctorProfile from './components/DoctorProfile';
+import Chatbot from './components/Chatbot';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path='/report/:id' element={<Analysis/>}/>
         <Route path='/reportdoctor/:id' element={<AnalysisDoctor/>}/>
         <Route path='/doctorprofile/:id' element={<DoctorProfile/>}></Route>
+        <Route path='/chatbot' element={<Chatbot/>}/>
 
         
 

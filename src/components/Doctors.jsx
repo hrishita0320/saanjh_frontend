@@ -1,70 +1,72 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
-function Doctor(){
-    const Navigate=useNavigate();
-    const[patientlist, setPatientlist]=useState(null)
-    useEffect(()=>{
-        const function1 = async() => {
-            const response=await axios.get("http://localhost:3001/en/getpatients")
-            setPatientlist(response.data);
+import Chatbot from './Chatbot';
+
+function Doctor() {
+    const Navigate = useNavigate();
+    const [patientList, setPatientList] = useState(null);
+    const handleChatbotClick = async () => {
+        Navigate('/chatbot');
+    };
+
+    useEffect(() => {
+        const fetchPatients = async () => {
+            const response = await axios.get("http://localhost:3001/en/getpatients");
+            setPatientList(response.data);
         }
-        function1();
-    },[])
-    const handleUpload=()=>{
+        fetchPatients();
+    }, []);
+
+    const handleUpload = () => {
         Navigate('/Upload');
     }
-    function formatDate(inputDate){
-        const date=new Date(inputDate);
-        const day=String(date.getDate()).padStart(2,'0');
-        const month= String(date.getMonth()+1).padStart(2,'0');
-        const year=date.getFullYear();
-        return `${day}/${month}/${year}`
-    }
+
+    
+
     const handlePatientClick = (id) => {
         Navigate(`/doctorprofile/${id}`);
-      };
-    
-    return(
+    };
+
+    function formatDate(inputDate) {
+        const date = new Date(inputDate);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
+    return (
         <div>
-            <Header/>
-            <div className='doctorpage'>
-            <table>
-                <thead>
-                <tr>
-                  <th>Patient Id</th>
-                  <th>Name</th>
-                  <th>Phone Number</th>
-                  <th>Date Of Birth</th>
-                  <th>Gender</th>
-                  <th>Blood Group</th>
-                </tr>
-                </thead>
-                <tbody>
-                            {patientlist && patientlist.map((data) => (
-                                <tr key={data._id} onClick={() => handlePatientClick(data._id)}  >
-                                    {/* <th>{data.s_no}</th> */}
-                                    <td>{data._id}</td>
-                                    <td>{data.name}</td>
-                                    {/* <td>{data.email}</td> */}
-                                    <td>{data.phone}</td>
-                                    <td>{formatDate(data.DOB)}</td>
-                                    <td>{data.gender}</td>
-                                    <td>{data.bloodGroup}</td>
-                                </tr>
-                            ))}
-                        </tbody>
+            <Header />
+            <div className='doctor-page'>
+                <div className='action-buttons'>
+                    <h2>Patients List</h2>
 
-                
-            </table>
-
-
-
-
+                    
+                </div>
+                <div className='patient-list'>
+                    {patientList && patientList.map((patient) => (
+                        <div key={patient._id} className='patient-row' onClick={() => handlePatientClick(patient._id)}>
+                            <div className='patient-info1'>
+                                <p><strong>ID:</strong> {patient._id}</p>
+                                <p><strong>Name:</strong> {patient.name}</p>
+                                <p><strong>Phone:</strong> {patient.phone}</p>
+                                <p><strong>DOB:</strong> {formatDate(patient.DOB)}</p>
+                                <p><strong>Gender:</strong> {patient.gender}</p>
+                                <p><strong>Blood Group:</strong> {patient.bloodGroup}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
-
+            <div>
+                <button onClick={handleChatbotClick }>Chatbot</button>
+            </div>
         </div>
     );
 }
+
 export default Doctor;

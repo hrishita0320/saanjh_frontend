@@ -86,7 +86,7 @@ const Header = () => {
                                                     )}
                                                     {userRole === 'Caretaker' && (
                                                         <li onClick={() => handleNavigation('/Caretakers')}>
-                                                            <a>Tasks</a>
+                                                            <a>Patients</a>
                                                         </li>
                                                     )}
                                                 </>
